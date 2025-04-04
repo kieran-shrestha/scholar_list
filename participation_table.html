@@ -1,91 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Presentation History</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<div class="table-responsive">
+  <table class="table table-bordered table-dark table-striped" id="presentationTable">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Event</th>
+        <th>Award</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be loaded here -->
+    </tbody>
+  </table>
+</div>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      background-color: #121212;
-      color: #f5f5f5;
-      font-family: Arial, sans-serif;
-    }
-    .table-container {
-      margin-top: 20px;
-    }
-    h2 {
-      color: #ffffff;
-      text-align: center;
-    }
-    .table thead {
-      background-color: #1f1f1f;
-    }
-    .table tbody tr {
-      background-color: #222;
-    }
-    .table tbody tr:hover {
-      background-color: #333;
-    }
-  </style>
-</head>
-<body>
+<script>
+  const url = 'https://raw.githubusercontent.com/kieran-shrestha/scholar_list/refs/heads/main/participation.json'; // Replace with your actual JSON URL
 
-  <h2>Presentation History</h2>
-
-  <div class="table-responsive table-container">
-    <table class="table table-bordered table-dark table-striped" id="presentationTable">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Type</th>
-          <th>Location</th>
-          <th>Date</th>
-          <th>Event</th>
-          <th>Award</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Data will be loaded here -->
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Bootstrap JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Load JSON and populate table -->
-  <script>
-    const url = 'https://raw.githubusercontent.com/kieran-shrestha/scholar_list/refs/heads/main/participation.json'; // Replace with your real URL
-
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const tbody = document.querySelector('#presentationTable tbody');
-        data.forEach(entry => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${entry.title}</td>
-            <td>${entry.type}</td>
-            <td>${entry.location}</td>
-            <td>${entry.date}</td>
-            <td>${entry.event}</td>
-            <td>${entry.award || '-'}</td>
-          `;
-          tbody.appendChild(row);
-        });
-      })
-      .catch(err => {
-        console.error('Error:', err);
-        document.querySelector('#presentationTable tbody').innerHTML = `
-          <tr><td colspan="6" class="text-danger text-center">Failed to load data.</td></tr>
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const tbody = document.querySelector('#presentationTable tbody');
+      data.forEach(entry => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${entry.title}</td>
+          <td>${entry.type}</td>
+          <td>${entry.location}</td>
+          <td>${entry.date}</td>
+          <td>${entry.event}</td>
+          <td>${entry.award || '-'}</td>
         `;
+        tbody.appendChild(row);
       });
-  </script>
-</body>
-</html>
+    })
+    .catch(error => {
+      console.error('Error loading JSON:', error);
+      document.querySelector('#presentationTable tbody').innerHTML = `
+        <tr><td colspan="6" class="text-danger text-center">Failed to load data.</td></tr>
+      `;
+    });
+</script>
