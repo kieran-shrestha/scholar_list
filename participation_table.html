@@ -10,15 +10,18 @@
 
   <style>
     body {
+      margin: 0;
+      padding: 20px;
       background-color: #121212;
       color: #f5f5f5;
-      padding: 20px;
+      font-family: Arial, sans-serif;
     }
     .table-container {
-      margin-top: 30px;
+      margin-top: 20px;
     }
     h2 {
       color: #ffffff;
+      text-align: center;
     }
     .table thead {
       background-color: #1f1f1f;
@@ -33,37 +36,35 @@
 </head>
 <body>
 
-  <div class="container">
-    <h2 class="text-center mb-4">Presentation History</h2>
+  <h2>Presentation History</h2>
 
-    <div class="table-responsive table-container">
-      <table class="table table-bordered table-dark table-striped" id="presentationTable">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Location</th>
-            <th>Date</th>
-            <th>Event</th>
-            <th>Award</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Data will be inserted here by JavaScript -->
-        </tbody>
-      </table>
-    </div>
+  <div class="table-responsive table-container">
+    <table class="table table-bordered table-dark table-striped" id="presentationTable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Location</th>
+          <th>Date</th>
+          <th>Event</th>
+          <th>Award</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be loaded here -->
+      </tbody>
+    </table>
   </div>
 
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Fetch and render JSON data -->
+  <!-- Load JSON and populate table -->
   <script>
-    const url = 'https://raw.githubusercontent.com/kieran-shrestha/scholar_list/refs/heads/main/participation.json'; // 🔁 Replace with your actual JSON URL
+    const url = 'https://example.com/presentations.json'; // Replace with your real URL
 
     fetch(url)
-      .then(response => response.json())
+      .then(res => res.json())
       .then(data => {
         const tbody = document.querySelector('#presentationTable tbody');
         data.forEach(entry => {
@@ -79,10 +80,11 @@
           tbody.appendChild(row);
         });
       })
-      .catch(error => {
-        console.error('Error loading JSON:', error);
-        const tbody = document.querySelector('#presentationTable tbody');
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Failed to load data.</td></tr>`;
+      .catch(err => {
+        console.error('Error:', err);
+        document.querySelector('#presentationTable tbody').innerHTML = `
+          <tr><td colspan="6" class="text-danger text-center">Failed to load data.</td></tr>
+        `;
       });
   </script>
 </body>
